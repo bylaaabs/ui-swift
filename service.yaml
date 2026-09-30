@@ -1,0 +1,10 @@
+# service.yaml - what this repo is. must agree with map/map/services.yaml; ci runs
+# `node map/scripts/check.mjs service.yaml`. schema and examples: map/schema/service.yaml.
+name: ui-swift
+hostname: null
+kind: data
+language: swift
+build: swift build - a swift package, compiled into each app that imports it
+deploy: none - a swift package every macOS and iOS app depends on at a pinned tag
+runs_on: null
+owner: brand
