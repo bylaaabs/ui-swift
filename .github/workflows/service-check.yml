@@ -1,0 +1,16 @@
+# checks that service.yaml agrees with map/map/services.yaml on every pull request and push
+# to main. the reusable workflow lives in bylaaabs/.github; the script in the map submodule.
+name: service check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    uses: bylaaabs/.github/.github/workflows/service-check.yml@main
+    secrets: inherit

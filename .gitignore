@@ -1,0 +1,9 @@
+.build/
+.swiftpm/
+*.xcodeproj/
+DerivedData/
+.DS_Store
+# finder makes "name 2.ext" when a file is copied or moved; never commit them
+* [0-9]
+* [0-9].*
+* [0-9][0-9].*
