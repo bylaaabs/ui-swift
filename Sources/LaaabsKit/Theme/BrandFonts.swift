@@ -1,8 +1,11 @@
-#if os(macOS)
 // Typography: Outfit (variable) for all UI, the system monospaced font where a mono role is
 // needed. Only three weights are used: 700 headings, 600 buttons and badges, 500 everything else.
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import CoreText
 import SwiftUI
 import os
@@ -46,6 +49,7 @@ public enum BrandFonts {
     }
 }
 
+#if os(macOS)
 extension NSFont {
     /// Outfit at an explicit size and weight, for views built in AppKit.
     public static func brandOutfit(_ size: CGFloat, weight: NSFont.Weight = .medium) -> NSFont {
@@ -61,6 +65,7 @@ extension NSFont {
     public static var brandCaption: NSFont { brandOutfit(11, weight: .medium) }
     public static var brandMono: NSFont { .monospacedSystemFont(ofSize: 12, weight: .regular) }
 }
+#endif
 
 extension Font {
     /// Outfit at an explicit size and weight, anchored to a text style.
@@ -68,6 +73,7 @@ extension Font {
         Font.custom(BrandFonts.family, size: size, relativeTo: style).weight(weight)
     }
 
+    #if os(macOS)
     public static var brandDisplay: Font { outfit(30, weight: .bold, relativeTo: .largeTitle) }
     public static var brandTitle: Font { outfit(24, weight: .bold, relativeTo: .title) }
     public static var brandHeadline: Font { outfit(15, weight: .bold, relativeTo: .headline) }
@@ -78,6 +84,18 @@ extension Font {
     public static var brandButton: Font { outfit(12, weight: .semibold, relativeTo: .body) }
     public static var brandCaption: Font { outfit(11, weight: .medium, relativeTo: .caption) }
     public static var brandBadge: Font { outfit(10, weight: .semibold, relativeTo: .caption) }
+    #else
+    // the same roles at the sizes a phone reads, apple's text styles set in outfit
+    public static var brandDisplay: Font { outfit(34, weight: .bold, relativeTo: .largeTitle) }
+    public static var brandTitle: Font { outfit(28, weight: .bold, relativeTo: .title) }
+    public static var brandHeadline: Font { outfit(17, weight: .bold, relativeTo: .headline) }
+    public static var brandBody: Font { outfit(17, weight: .medium, relativeTo: .body) }
+    public static var brandNav: Font { outfit(17, weight: .medium, relativeTo: .body) }
+    public static var brandNavSelected: Font { outfit(17, weight: .semibold, relativeTo: .body) }
+    public static var brandCallout: Font { outfit(16, weight: .medium, relativeTo: .callout) }
+    public static var brandButton: Font { outfit(17, weight: .semibold, relativeTo: .body) }
+    public static var brandCaption: Font { outfit(13, weight: .medium, relativeTo: .caption) }
+    public static var brandBadge: Font { outfit(12, weight: .semibold, relativeTo: .caption) }
+    #endif
     public static var brandMono: Font { .system(.callout, design: .monospaced) }
 }
-#endif

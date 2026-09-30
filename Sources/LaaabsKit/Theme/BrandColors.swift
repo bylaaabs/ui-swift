@@ -1,9 +1,12 @@
-#if os(macOS)
 // The laaabs. palette, moved here from the apps' own Theme/ (baaar, taaab and caaapture carried the
 // same copy) with the same names, so an app moves onto the kit by deleting its copy. As terminaaal defines it: Two colors do the work: cyan accent and
 // absolute black. Everything else is a white-opacity ladder. Never invent shades.
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import SwiftUI
 
 public enum BrandColors {
@@ -69,6 +72,7 @@ public enum BrandColors {
     /// Hover and pressed on top of a card.
     public static let surfaceHigh = Color(hex: 0x1A1A1A)
 
+    #if os(macOS)
     // MARK: AppKit twins
 
     public static let nsAccent = NSColor(displayP3Red: 0x00 / 255, green: 0xB5 / 255, blue: 0xE2 / 255, alpha: 1)
@@ -83,6 +87,7 @@ public enum BrandColors {
     public static let nsSurfaceHigh = NSColor(srgbRed: 0x1A / 255, green: 0x1A / 255, blue: 0x1A / 255, alpha: 1)
     public static let nsBorderSolid = NSColor(srgbRed: 0x3B / 255, green: 0x3B / 255, blue: 0x3B / 255, alpha: 1)
     public static let nsAccentDeep = NSColor(displayP3Red: 0x00 / 255, green: 0x9E / 255, blue: 0xC5 / 255, alpha: 1)
+    #endif
 }
 
 extension Color {
@@ -148,4 +153,3 @@ private struct BrandHairlineBorder: ViewModifier {
             .background(ring, in: RoundedRectangle(cornerRadius: radius))
     }
 }
-#endif

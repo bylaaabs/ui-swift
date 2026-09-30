@@ -1,8 +1,11 @@
-#if os(macOS)
 // The controls of the laaabs. look, as terminaaal's settings draw them: a capsule toggle, pill
 // buttons, a segmented pick, labelled blocks and rows, badges and links.
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import SwiftUI
 
 // MARK: - Layout
@@ -293,10 +296,11 @@ public struct BrandLink: View {
     public var color: Color = BrandColors.accent
 
     @State private var isHovered = false
+    @Environment(\.openURL) private var openURL
 
     public var body: some View {
         Button {
-            if let url = URL(string: url) { NSWorkspace.shared.open(url) }
+            if let url = URL(string: url) { openURL(url) }
         } label: {
             Text(title)
                 .font(font)
@@ -352,4 +356,3 @@ public struct BrandCallout: View {
         .overlay(RoundedRectangle(cornerRadius: 10).strokeBorder(tint.opacity(0.20), lineWidth: 1))
     }
 }
-#endif

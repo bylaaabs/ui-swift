@@ -1,5 +1,6 @@
 #if os(macOS)
 import AppKit
+#endif
 import SwiftUI
 
 // what an app's own Theme/ gave it that is about the app, not the look: its own mark, and whether its
@@ -20,6 +21,7 @@ public extension Wordmark {
     }
 }
 
+#if os(macOS)
 /// how the kit's floating panels (the context menu, the shortcut menu) take part in screen captures.
 /// `.none` keeps them out of any capture, which is what caaapture needs and costs the others nothing.
 public enum BrandPanels {

@@ -1,10 +1,13 @@
-#if os(macOS)
 // what taaab and caaapture added on top of baaar's theme (BrandColors, BrandFonts, BrandControls and
 // BrandWindow are copied from baaar unchanged): the web kit's surfaces and the dot, a status pill,
 // an eyebrow label, a chip, the title row, geist mono, and colour helpers for core graphics.
 // everything here moves to bylaaabs/ui-swift#2 with the rest.
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import SwiftUI
 
 extension BrandColors {
@@ -20,6 +23,7 @@ extension BrandColors {
 
 }
 
+#if os(macOS)
 extension NSColor {
     /// hex literal (rgb) in display p3.
     public convenience init(hex: UInt32, alpha: CGFloat = 1.0) {
@@ -31,11 +35,15 @@ extension NSColor {
         )
     }
 }
+#endif
 
 extension CGColor {
     /// hex literal (rgb) in display p3.
     public static func p3(hex: UInt32, alpha: CGFloat = 1.0) -> CGColor {
-        NSColor(hex: hex, alpha: alpha).cgColor
+        CGColor(
+            colorSpace: CGColorSpace(name: CGColorSpace.displayP3)!,
+            components: [CGFloat((hex >> 16) & 0xFF) / 255, CGFloat((hex >> 8) & 0xFF) / 255, CGFloat(hex & 0xFF) / 255, alpha]
+        )!
     }
 }
 
@@ -57,6 +65,7 @@ public enum BrandMonoFont {
     }
 }
 
+#if os(macOS)
 extension NSFont {
     /// geist mono, falling back to the system's monospaced font.
     public static func brandMono(_ size: CGFloat, weight: NSFont.Weight = .medium) -> NSFont {
@@ -64,6 +73,7 @@ extension NSFont {
         return NSFont(name: name, size: size) ?? .monospacedSystemFont(ofSize: size, weight: weight)
     }
 }
+#endif
 
 extension Font {
     /// geist mono for digits that must align: sizes, coordinates, colours, values.
@@ -141,6 +151,7 @@ public struct ActionChip: View {
     }
 }
 
+#if os(macOS)
 // MARK: - the title row
 
 /// the title row a laaabs. window draws under its transparent titlebar, as baaar's settings: the
@@ -297,6 +308,7 @@ private struct ShortcutMenuRow: View {
         .accessibilityAddTraits(.isButton)
     }
 }
+#endif
 
 // MARK: - stepper
 
@@ -339,4 +351,3 @@ public struct BrandStepper: View {
         .disabled(!enabled)
     }
 }
-#endif
