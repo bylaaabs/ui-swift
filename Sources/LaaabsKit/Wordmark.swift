@@ -27,6 +27,12 @@ public struct Wordmark: View {
     let height: CGFloat
     let ink: Color
     let dot: Dot
+    /// the apps' own box (`Wordmark(height:tint:)`): `height` runs from the top of the letters to the
+    /// bottom of the round ones, and a descender hangs below the view, as the apps' marks always did
+    var appBox = false
+
+    /// how far round letters sit below the baseline, in the marks' units (Outfit 700 at 2000)
+    static let overshoot: Double = 22
 
     public init(_ name: WordmarkName, height: CGFloat = 22, ink: Color = .white, dot: Dot = .cyan) {
         self.name = name
@@ -38,7 +44,7 @@ public struct Wordmark: View {
     public var body: some View {
         let data = Wordmarks.data(name)
         let box = data.viewBox
-        let scale = height / data.letterHeight
+        let scale = height / (data.letterHeight + (appBox ? Self.overshoot : 0))
         return ZStack(alignment: .topLeading) {
             ForEach(Array(data.paths.enumerated()), id: \.offset) { _, shape in
                 WordmarkShape(d: shape.d, box: box)
@@ -46,6 +52,7 @@ public struct Wordmark: View {
             }
         }
         .frame(width: box.width * scale, height: box.height * scale)
+        .frame(width: box.width * scale, height: appBox ? height : box.height * scale, alignment: .top)
         .accessibilityElement()
         .accessibilityLabel(name == .laaabs ? "laaabs." : name.rawValue)
     }
