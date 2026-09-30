@@ -6,9 +6,10 @@ let package = Package(
     name: "LaaabsKit",
     // the words the kit says itself come in english and spanish, as every app does
     defaultLocalization: "en",
-    // the lowest the apps ship on: speaaak runs on macOS 15 (caaapture 26, baaar and taaab 27);
-    // finaaance is iOS 18. the kit uses nothing newer, so an app never has to raise its own for it
-    platforms: [.macOS(.v15), .iOS(.v18)],
+    // the lowest the apps ship on: islaaand runs on macOS 14 (speaaak and clipboaaard 15, caaapture
+    // and terminaaal 26, baaar and taaab 27); iOS 18 for clipboaaard and finaaance. the kit uses
+    // nothing newer, so an app never has to raise its own for it
+    platforms: [.macOS(.v14), .iOS(.v18)],
     products: [
         .library(name: "LaaabsKit", targets: ["LaaabsKit"]),
         // the shortcut recorder, apart: only the apps that record shortcuts pull KeyboardShortcuts

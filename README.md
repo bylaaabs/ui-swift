@@ -18,7 +18,7 @@ Wordmark(.baaar, height: 22)
 
 ## moving an app onto the kit
 
-1. add the package at an exact tag (the kit needs macOS 15 or iOS 18); `LaaabsShortcuts` too if the app records shortcuts.
+1. add the package at an exact tag (the kit needs macOS 14 or iOS 18); `LaaabsShortcuts` too if the app records shortcuts.
 2. at launch: `Wordmark.appMark = .<app>`, `BrandFonts.register()`, `BrandMonoFont.register()`.
 3. delete the app's `Theme/` (baaar keeps `BarPalette`, which is about its bar, not the look) and its bundled fonts.
 4. `import LaaabsKit` where the theme was used. nothing else changes: same names, same parameters, same defaults.
