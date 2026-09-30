@@ -32,6 +32,6 @@ the design kit for every laaabs. app on macOS and iOS, the swift twin of `ui-web
 
 ## commands
 
-- `swift build` and `swift test`.
+- `swift build` and `swift test`. in a folder that is synced (the desktop, icloud), `swift test` fails to sign the test bundle ("resource fork, finder information, or similar detritus"): build outside it, `swift test --scratch-path /tmp/ui-swift`.
 - `swift run Gallery` / `swift run Gallery --png out.png`.
 - after cloning: `git submodule update --init`. when brand changes: bump the `brand` submodule.
