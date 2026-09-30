@@ -14,6 +14,9 @@ public extension Wordmark {
     /// the letters; the dot stays cyan. the mark is now drawn from brand's vector, not a bundled image.
     @MainActor init(height: CGFloat = 28, tint: Color = BrandColors.on) {
         self.init(Wordmark.appMark, height: height, ink: tint)
+        // the box is the apps' own: from the top of the letters to the bottom of the round ones, with
+        // a descender hanging below it
+        appBox = true
     }
 }
 
