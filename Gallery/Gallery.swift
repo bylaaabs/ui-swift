@@ -76,6 +76,22 @@ struct GalleryView: View {
                 }
                 .frame(width: 560)
             }
+            section("the name in text: drawn, above; outfit typed, below, to check size, weight and baseline") {
+                ForEach([13.0, 17.0, 40.0], id: \.self) { size in
+                    HStack(alignment: .firstTextBaseline, spacing: 40) {
+                        ForEach([(NameWeight.medium, Font.Weight.medium), (.semibold, .semibold), (.bold, .bold)], id: \.0.rawValue) { name, weight in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("things by \(Text.laaabs(size: size, weight: name))").font(.outfit(size, weight: weight))
+                                Text(verbatim: "things by laaabs.").font(.outfit(size, weight: weight)).foregroundStyle(.white.opacity(0.35))
+                            }
+                        }
+                    }
+                    .foregroundStyle(.white)
+                }
+                Text.name("hello@laaabs.com - bylaaabs on github - a tool by laaabs.", size: 13)
+                    .font(.outfit(13, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.6))
+            }
             section("the studio") {
                 Wordmark(.laaabs, height: 64)
                 Wordmark(.laaabs, height: 26, dot: .ink)

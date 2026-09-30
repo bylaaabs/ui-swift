@@ -10,6 +10,7 @@ Wordmark(.baaar, height: 22)
 ```
 
 - **marks**: `Wordmark(_:height:ink:dot:)` draws any mark from brand's vectors (`brand/generated/swift`), with the cyan dot, the dot in the ink colour, or any colour. `height` is the height of the letters, as on the web.
+- **the name in text**: `Text("things by \(Text.laaabs(size: 13))")`, `Text.mark(.baaar, size: 13)` and `Text.name("hello@laaabs.com", size: 13)`, as ui-web's `Laaabs` and `Name`: at 1 em, on the baseline, with outfit's side bearings, in 500, 600 or 700; macOS and iOS.
 - **the theme** (macOS): `BrandColors`, `BrandFonts` (outfit and geist mono ship in the kit), the controls (`BrandBlock`, `BrandRow`, `BrandToggle`, `BrandSegmented`, `BrandStepper`, `PillButton`, `BrandBadge`, `BrandStatusPill`, `BrandDot`, `ActionChip`, `BrandLink`, `BrandCallout`, `BrandTitleRow`), `BrandMenu` and `BrandShortcutMenu`, `NSWindow.applyBrandChrome`. the same names the apps' own `Theme/` used.
 - **the patterns** the apps wrote on their own (macOS): `BrandNavRow` (the settings sidebar), `CardRows`, `.brandField()`, `.brandTextArea()`, `PermissionRow`, `confirm(_:_:action:)`, `ClosureMenuItem`. the words the kit says itself (grant, granted, cancel) come in english and spanish.
 - **shortcuts**: `ShortcutField`, in `LaaabsShortcuts`, apart, because it pulls KeyboardShortcuts 2.4.0.
