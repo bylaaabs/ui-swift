@@ -13,6 +13,8 @@ struct GalleryView: View {
     @State private var toggle = true
     @State private var mode = "area"
     @State private var delay: UInt32 = 3
+    @State private var name = "caaapture 2026-09-30 at 12.04"
+    @State private var commands = "cd ~/code\ngit status"
 
     var body: some View {
         VStack(alignment: .leading, spacing: 28) {
@@ -53,6 +55,26 @@ struct GalleryView: View {
                 }
                 .frame(width: 220)
                 .brandCard()
+            }
+            section("patterns the apps wrote on their own") {
+                HStack(alignment: .top, spacing: 24) {
+                    VStack(spacing: 2) {
+                        BrandNavRow(symbol: "gearshape", title: "general", isSelected: true) {}
+                        BrandNavRow(symbol: "keyboard", title: "shortcuts", isSelected: false) {}
+                    }
+                    .frame(width: 180)
+                    VStack(alignment: .leading, spacing: 10) {
+                        TextField("", text: $name).brandField()
+                        TextEditor(text: $commands).brandTextArea(height: 56)
+                    }
+                    .frame(width: 280)
+                }
+                CardRows {
+                    PermissionRow(title: "microphone", badge: "required", message: "speaaak hears you only while the key is down.", systemImage: "mic", isGranted: true) {}
+                    BrandHLine()
+                    PermissionRow(title: "accessibility", badge: "optional", message: "to type the text where the cursor is.", systemImage: "accessibility", isGranted: false) {}
+                }
+                .frame(width: 560)
             }
             section("the studio") {
                 Wordmark(.laaabs, height: 64)
@@ -102,11 +124,16 @@ struct GalleryApp: App {
         let args = CommandLine.arguments
         if let i = args.firstIndex(of: "--png"), i + 1 < args.count {
             MainActor.assumeIsolated {
-                let renderer = ImageRenderer(content: GalleryView())
-                renderer.scale = 2
-                if let image = renderer.nsImage, let tiff = image.tiffRepresentation,
-                   let rep = NSBitmapImageRep(data: tiff), let png = rep.representation(using: .png, properties: [:]) {
-                    try? png.write(to: URL(fileURLWithPath: args[i + 1]))
+                // drawn as the apps draw their render checks: an AppKit host, so text fields and other
+                // AppKit-backed controls come out too (ImageRenderer leaves them as placeholders)
+                let host = NSHostingView(rootView: GalleryView())
+                host.frame.size = host.fittingSize
+                let window = NSWindow(contentRect: host.frame, styleMask: .borderless, backing: .buffered, defer: false)
+                window.contentView = host
+                host.layoutSubtreeIfNeeded()
+                if let rep = host.bitmapImageRepForCachingDisplay(in: host.bounds) {
+                    host.cacheDisplay(in: host.bounds, to: rep)
+                    try? rep.representation(using: .png, properties: [:])?.write(to: URL(fileURLWithPath: args[i + 1]))
                     print("wrote \(args[i + 1])")
                 }
             }
