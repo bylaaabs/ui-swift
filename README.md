@@ -15,6 +15,7 @@ Wordmark(.baaar, height: 22)
 - **the patterns** the apps wrote on their own (macOS): `BrandNavRow` (the settings sidebar), `CardRows`, `.brandField()`, `.brandTextArea()`, `PermissionRow`, `confirm(_:_:action:)`, `ClosureMenuItem`. the words the kit says itself (grant, granted, cancel) come in english and spanish.
 - **shortcuts**: `ShortcutField`, in `LaaabsShortcuts`, apart, because it pulls KeyboardShortcuts 2.4.0.
 - **an app's own mark**: set `Wordmark.appMark = .caaapture` at launch, and `Wordmark(height:tint:)` draws it, as the app's `Theme/` did.
+- **what an app that charges needs** (iOS and macOS): `Subscription` (storekit 2: the plans, what the person has, buy, restore, the errors in plain words, nothing counted), `PaywallView`, `BrandOnboarding` (four screens at most, skippable, still under reduced motion), `PlanSettings`, `HelpSettings`, `AboutSettings`, and `BrandButtonStyle` (the web's wash, outline and white).
 - **gallery**: `swift run Gallery`, or `swift run Gallery --png out.png`.
 
 ## moving an app onto the kit
@@ -27,3 +28,9 @@ Wordmark(.baaar, height: 22)
 - macOS 26 and iOS 18.
 
 the plan: #1 (this start), #3 (the marks), #2 (tokens and components from baaar, taaab and caaapture), #4 (what the apps need: iOS, the subscription, the paywall).
+
+## tests
+
+- `swift test --scratch-path /tmp/ui-swift`: the marks, the name, the strings.
+- the subscription runs against storekit's local store, which only answers inside an app: `cd Tests/StoreHost && xcodegen generate`, then `xcodebuild test -project StoreHost.xcodeproj -scheme StoreHostiOS -destination 'platform=iOS Simulator,name=iPhone 17'` (or `-scheme StoreHost -destination platform=macOS`).
+- `TEST_RUNNER_SHOTS=<folder>` on the iOS run draws the paywall, onboarding, settings and buttons at a phone's size into that folder.

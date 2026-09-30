@@ -1,0 +1,85 @@
+# the app the subscription tests run inside: storekit's local test store refuses a process that is not
+# an app. generated with `xcodegen generate`, never committed.
+name: StoreHost
+
+options:
+  bundleIdPrefix: com.laaabs.kit
+  deploymentTarget:
+    macOS: "14.0"
+    iOS: "18.0"
+
+packages:
+  LaaabsKit:
+    path: ../..
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    GENERATE_INFOPLIST_FILE: YES
+
+targets:
+  StoreHost:
+    type: application
+    platform: macOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.laaabs.kit.storehost
+  StoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - StoreTests
+      - path: Plans.storekit
+        buildPhase: resources
+    dependencies:
+      - target: StoreHost
+      - package: LaaabsKit
+        product: LaaabsKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.laaabs.kit.storetests
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/StoreHost.app/Contents/MacOS/StoreHost
+        BUNDLE_LOADER: $(TEST_HOST)
+
+  # the same tests on iOS, where storekit's local store also keeps the renewal state
+  StoreHostiOS:
+    type: application
+    platform: iOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.laaabs.kit.storehost
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+  StoreTestsiOS:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - StoreTests
+      - path: Plans.storekit
+        buildPhase: resources
+    dependencies:
+      - target: StoreHostiOS
+      - package: LaaabsKit
+        product: LaaabsKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.laaabs.kit.storetests
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/StoreHostiOS.app/StoreHostiOS
+        BUNDLE_LOADER: $(TEST_HOST)
+
+schemes:
+  StoreHost:
+    build:
+      targets:
+        StoreHost: all
+    test:
+      targets: [StoreTests]
+  StoreHostiOS:
+    build:
+      targets:
+        StoreHostiOS: all
+    test:
+      targets: [StoreTestsiOS]
