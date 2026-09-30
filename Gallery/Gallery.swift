@@ -1,11 +1,59 @@
 import SwiftUI
 import LaaabsKit
+import LaaabsShortcuts
+import KeyboardShortcuts
+
+extension KeyboardShortcuts.Name {
+    static let galleryCapture = Self("gallery.capture")
+}
 
 /// every piece of the kit on one screen, on the studio's black, to compare against the apps and the
 /// pencil canvas. `swift run Gallery` opens it; `swift run Gallery --png out.png` writes it to a file.
 struct GalleryView: View {
+    @State private var toggle = true
+    @State private var mode = "area"
+    @State private var delay: UInt32 = 3
+
     var body: some View {
         VStack(alignment: .leading, spacing: 28) {
+            section("controls, as baaar, taaab and caaapture draw them") {
+                BrandTitleRow(title: "settings")
+                BrandBlock("general") {
+                    BrandRow("launch at login", detail: "start with the mac") { BrandToggle(isOn: $toggle) }
+                    BrandRow("mode") {
+                        BrandSegmented(selection: $mode, options: [
+                            .init(value: "area", label: "area"),
+                            .init(value: "window", label: "window"),
+                            .init(value: "screen", label: "screen"),
+                        ])
+                    }
+                    BrandRow("delay") { BrandStepper(value: $delay, range: 0 ... 10, unit: "s") }
+                    BrandRow("shortcut") { ShortcutField(name: .galleryCapture) }
+                }
+                HStack(spacing: 10) {
+                    PillButton("primary", kind: .primary) {}
+                    PillButton("secondary", kind: .secondary) {}
+                    PillButton("destructive", kind: .destructive) {}
+                }
+                HStack(spacing: 12) {
+                    BrandBadge(text: "alpha")
+                    BrandStatusPill(text: "live")
+                    BrandStatusPill(text: "paused", isLive: false)
+                    BrandDot()
+                    BrandDot(isOn: false)
+                    ActionChip(label: "pin", isOn: true) {}
+                    ActionChip(label: "copy", isOn: false) {}
+                    BrandLink(title: "laaabs.com", url: "https://laaabs.com")
+                }
+                BrandCallout(systemImage: "info.circle", title: "screen recording", message: "caaapture needs it to see the screen. nothing leaves the mac.", actionTitle: "open settings") {}
+                VStack(spacing: 0) {
+                    BrandMenuRow(title: "copy", symbol: "doc.on.doc") {}
+                    BrandHLine()
+                    BrandMenuRow(title: "delete", symbol: "trash", isDestructive: true) {}
+                }
+                .frame(width: 220)
+                .brandCard()
+            }
             section("the studio") {
                 Wordmark(.laaabs, height: 64)
                 Wordmark(.laaabs, height: 26, dot: .ink)
@@ -46,6 +94,11 @@ struct GalleryView: View {
 @main
 struct GalleryApp: App {
     init() {
+        MainActor.assumeIsolated {
+            BrandFonts.register()
+            BrandMonoFont.register()
+            Wordmark.appMark = .laaabs
+        }
         let args = CommandLine.arguments
         if let i = args.firstIndex(of: "--png"), i + 1 < args.count {
             MainActor.assumeIsolated {
