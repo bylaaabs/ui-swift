@@ -13,6 +13,7 @@ Wordmark(.baaar, height: 22)
 - **the name in text**: `Text("things by \(Text.laaabs(size: 13))")`, `Text.mark(.baaar, size: 13)` and `Text.name("hello@laaabs.com", size: 13)`, as ui-web's `Laaabs` and `Name`: at 1 em, on the baseline, with outfit's side bearings, in 500, 600 or 700; macOS and iOS.
 - **the theme** (macOS): `BrandColors`, `BrandFonts` (outfit and geist mono ship in the kit), the controls (`BrandBlock`, `BrandRow`, `BrandToggle`, `BrandSegmented`, `BrandStepper`, `PillButton`, `BrandBadge`, `BrandStatusPill`, `BrandDot`, `ActionChip`, `BrandLink`, `BrandCallout`, `BrandTitleRow`), `BrandMenu` and `BrandShortcutMenu`, `NSWindow.applyBrandChrome`. the same names the apps' own `Theme/` used.
 - **the patterns** the apps wrote on their own (macOS): `BrandNavRow` (the settings sidebar), `CardRows`, `.brandField()`, `.brandTextArea()`, `PermissionRow`, `confirm(_:_:action:)`, `ClosureMenuItem`. the words the kit says itself (grant, granted, cancel) come in english and spanish.
+- **the controls apps took from the system** (macOS and iOS): `BrandSelect` (a field or a filter showing the chosen option; macOS opens `BrandMenu.select`, the brand panel with a check, arrows, return, escape and typing to jump; iOS a sheet with the same rows; sections and the "every x" first option), `BrandTextField` (single, multi line growing to a limit, secure; placeholder, cyan focus ring, return submits, clear button), `BrandList` (rows lit when chosen, hairlines, titled sections, swipe actions on iOS, `BrandMenu` on right-click and arrows on macOS, an empty slot, `BrandEmptyState`) and `BrandProgress` (the spinner and the bar).
 - **shortcuts**: `ShortcutField`, in `LaaabsShortcuts`, apart, because it pulls KeyboardShortcuts 2.4.0.
 - **an app's own mark**: set `Wordmark.appMark = .caaapture` at launch, and `Wordmark(height:tint:)` draws it, as the app's `Theme/` did.
 - **what an app that charges needs** (iOS and macOS): `Subscription` (storekit 2: the plans, what the person has, buy, restore, the errors in plain words, nothing counted), `PaywallView`, `BrandOnboarding` (four screens at most, skippable, still under reduced motion), `PlanSettings`, `HelpSettings`, `AboutSettings`, and `BrandButtonStyle` (the web's wash, outline and white).
@@ -31,6 +32,6 @@ the plan: #1 (this start), #3 (the marks), #2 (tokens and components from baaar,
 
 ## tests
 
-- `swift test --scratch-path /tmp/ui-swift`: the marks, the name, the strings.
+- `swift test --scratch-path /tmp/ui-swift`: the marks, the name, the strings, the controls (arrows, typing, the "every x" option, the bar).
 - the subscription runs against storekit's local store, which only answers inside an app: `cd Tests/StoreHost && xcodegen generate`, then `xcodebuild test -project StoreHost.xcodeproj -scheme StoreHostiOS -destination 'platform=iOS Simulator,name=iPhone 17'` (or `-scheme StoreHost -destination platform=macOS`).
-- `TEST_RUNNER_SHOTS=<folder>` on the iOS run draws the paywall, onboarding, settings and buttons at a phone's size into that folder.
+- `TEST_RUNNER_SHOTS=<folder>` on the iOS run draws the paywall, onboarding, settings, buttons and the controls at a phone's size into that folder.
