@@ -15,6 +15,28 @@ struct GalleryView: View {
     @State private var delay: UInt32 = 3
     @State private var name = "caaapture 2026-09-30 at 12.04"
     @State private var commands = "cd ~/code\ngit status"
+    @State private var from = 22 * 60
+    @State private var level: String?
+    @State private var project: String? = "ui-swift"
+    @State private var sound = "chime"
+    @State private var search = ""
+    @State private var reply = "yes, ship it. and then\nopen the pull request against feat/ios\nso paaager can pin it"
+    @State private var key = "sk-laaabs-0000"
+    @State private var page: Int? = 2
+
+    private static let times = (0 ..< 48).map { BrandSelectOption(String(format: "%02d:%02d", $0 / 2, $0 % 2 * 30), value: $0 * 30) }
+    private static let levels = ["info", "decision", "urgent", "call"].map { BrandSelectOption($0, value: $0) }
+    private static let levelSections = [BrandSelectSection(options: [BrandSelectOption("every level", value: String?.none)] + levels.map { BrandSelectOption($0.label, value: Optional($0.value)) })]
+    private static let sounds = [
+        BrandSelectSection("laaabs.", options: [BrandSelectOption("chime", value: "chime", symbol: "bell"), BrandSelectOption("knock", value: "knock", symbol: "hand.tap")]),
+        BrandSelectSection("the system", options: [BrandSelectOption("glass", value: "glass", symbol: "speaker.wave.2"), BrandSelectOption("none", value: "none", symbol: "speaker.slash")]),
+    ]
+    private static let pages = [
+        GalleryPage(id: 1, title: "tests failed on main", detail: "ui-swift - 2 min ago"),
+        GalleryPage(id: 2, title: "merge the pull request?", detail: "paaager - 14 min ago"),
+        GalleryPage(id: 3, title: "turn ended", detail: "laaabs.com - 1 h ago"),
+        GalleryPage(id: 4, title: "which plan, monthly or yearly?", detail: "finaaance - yesterday"),
+    ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 28) {
@@ -76,6 +98,71 @@ struct GalleryView: View {
                 }
                 .frame(width: 560)
             }
+            section("select, text field, list and progress (#12)") {
+                HStack(alignment: .top, spacing: 32) {
+                    VStack(alignment: .leading, spacing: 14) {
+                        CardRows {
+                            BrandRow("from", detail: "a time of day, as paaager's quiet hours") {
+                                BrandSelect(selection: $from, options: Self.times, font: .brandDigits)
+                            }
+                            BrandHLine()
+                            BrandRow("sound", detail: "sections and symbols") {
+                                BrandSelect(selection: $sound, sections: Self.sounds)
+                            }
+                        }
+                        HStack(spacing: 8) {
+                            BrandSelect(selection: $level, every: "every level", options: Self.levels)
+                            BrandSelect(selection: $project, every: "every project", options: ["paaager", "ui-swift"].map { BrandSelectOption($0, value: $0) })
+                            BrandSelect("level", selection: $sound, sections: Self.sounds, style: .filter)
+                        }
+                        VStack(alignment: .leading, spacing: 10) {
+                            BrandTextField("search pages", text: $search, clearable: true)
+                            BrandTextField("answer in your own words", text: $reply, kind: .multiline(maxLines: 3))
+                            BrandTextField("api key", text: $key, kind: .secure, clearable: true)
+                            BrandTextField("disabled", text: .constant("read only")).disabled(true)
+                        }
+                        VStack(alignment: .leading, spacing: 14) {
+                            HStack(spacing: 18) {
+                                BrandProgress()
+                                BrandProgress(size: 24)
+                                BrandProgress(label: "loading pages")
+                            }
+                            BrandProgress(value: 0.42, label: "uploading the build")
+                            BrandProgress(value: 1)
+                        }
+                    }
+                    .frame(width: 400)
+                    VStack(alignment: .leading, spacing: 14) {
+                        HStack(alignment: .top, spacing: 14) {
+                            BrandSelectMenu(sections: Self.sounds, selection: sound, highlighted: "glass") { _ in }
+                                .frame(width: 180, height: BrandSelectMenu.height(for: Self.sounds))
+                                .brandHairlineBorder(cornerRadius: 9, fill: BrandColors.surfaceElevated)
+                            BrandSelectMenu(sections: Self.levelSections, selection: String?.none, highlighted: "urgent") { _ in }
+                                .frame(width: 150, height: BrandSelectMenu.height(for: Self.levelSections))
+                                .brandHairlineBorder(cornerRadius: 9, fill: BrandColors.surfaceElevated)
+                        }
+                        BrandList(sections: [
+                            BrandListSection("today", items: Array(Self.pages.prefix(3))),
+                            BrandListSection("yesterday", items: Array(Self.pages.suffix(1))),
+                        ], selection: $page, actions: { _ in [BrandListAction("seen", symbol: "eye") {}] }) { page in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(page.title).font(.brandBody).foregroundStyle(BrandColors.on)
+                                Text(page.detail).font(.brandCaption).foregroundStyle(BrandColors.onSecondary)
+                            }
+                        } empty: {
+                            EmptyView()
+                        }
+                        .frame(height: 270)
+                        .brandHairlineBorder(cornerRadius: 10, fill: BrandColors.surface)
+                        BrandList([GalleryPage](), row: { _ in EmptyView() }) {
+                            BrandEmptyState(symbol: "line.3.horizontal.decrease", title: "nothing matches", message: "change the filters or clear the search.", actionTitle: "clear filters") {}
+                        }
+                        .frame(height: 190)
+                        .brandHairlineBorder(cornerRadius: 10, fill: BrandColors.surface)
+                    }
+                    .frame(width: 400)
+                }
+            }
             section("the name in text: drawn, above; outfit typed, below, to check size, weight and baseline") {
                 ForEach([13.0, 17.0, 40.0], id: \.self) { size in
                     HStack(alignment: .firstTextBaseline, spacing: 40) {
@@ -127,6 +214,12 @@ struct GalleryView: View {
             content()
         }
     }
+}
+
+struct GalleryPage: Identifiable {
+    let id: Int
+    let title: String
+    let detail: String
 }
 
 @main
