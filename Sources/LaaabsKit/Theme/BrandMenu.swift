@@ -28,6 +28,8 @@ public enum BrandMenu {
     private static var localMonitor: Any?
     private static var globalMonitor: Any?
     private static var resignObserver: NSObjectProtocol?
+    private static var keyHandler: (@MainActor (KeyPress) -> Bool)?
+    private static var closeHandler: (@MainActor () -> Void)?
 
     /// Shows the menu with its top-left corner at a screen point (AppKit coordinates).
     public static func show(at point: NSPoint, items: [Item]) {
@@ -40,8 +42,16 @@ public enum BrandMenu {
             dismiss()
             item.action()
         })
+        present(host, size: NSSize(width: width, height: height), at: NSPoint(x: point.x, y: point.y - height))
+    }
+
+    /// puts `content` in the floating panel at `origin` (its bottom-left, AppKit coordinates, kept on
+    /// screen), and closes it on escape, a click outside or the app going to the background, then calls
+    /// `onClose`. `onKey`
+    /// sees every other key first: true means it used it, and the window under the panel never gets it.
+    static func present(_ content: NSView, size: NSSize, at origin: NSPoint, onClose: (@MainActor () -> Void)? = nil, onKey: (@MainActor (KeyPress) -> Bool)? = nil) {
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: width, height: height),
+            contentRect: NSRect(origin: .zero, size: size),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -53,13 +63,14 @@ public enum BrandMenu {
         panel.isOpaque = false
         panel.appearance = NSAppearance(named: .darkAqua)
         panel.isReleasedWhenClosed = false
-        panel.contentView = host
+        panel.contentView = content
 
-        var origin = NSPoint(x: point.x, y: point.y - height)
-        if let screen = NSScreen.screens.first(where: { $0.frame.contains(point) }) {
+        var origin = origin
+        let probe = NSPoint(x: origin.x, y: origin.y + size.height)
+        if let screen = NSScreen.screens.first(where: { $0.frame.contains(probe) }) ?? NSScreen.main {
             let visible = screen.visibleFrame
-            origin.x = min(max(origin.x, visible.minX + 4), visible.maxX - width - 4)
-            origin.y = max(origin.y, visible.minY + 4)
+            origin.x = min(max(origin.x, visible.minX + 4), visible.maxX - size.width - 4)
+            origin.y = min(max(origin.y, visible.minY + 4), visible.maxY - size.height - 4)
         }
         panel.setFrameOrigin(origin)
         panel.alphaValue = 0
@@ -70,15 +81,23 @@ public enum BrandMenu {
             panel.animator().alphaValue = 1
         }
         self.panel = panel
+        keyHandler = onKey
+        closeHandler = onClose
 
         localMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .keyDown]) { event in
             let window = event.window
-            let isEscape = event.type == .keyDown && event.keyCode == 53
-            let isOutsideClick = event.type != .keyDown
-            MainActor.assumeIsolated {
-                if isEscape || (isOutsideClick && window !== BrandMenu.panel) { dismiss() }
+            let isKey = event.type == .keyDown
+            let isEscape = isKey && event.keyCode == 53
+            let press = isKey ? KeyPress(event) : nil
+            let passes = MainActor.assumeIsolated {
+                if isEscape || (!isKey && window !== BrandMenu.panel) {
+                    dismiss()
+                    return !isEscape
+                }
+                if let press, let handler = keyHandler, handler(press) { return false }
+                return true
             }
-            return isEscape ? nil : event
+            return passes ? event : nil
         }
         globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { _ in
             MainActor.assumeIsolated { dismiss() }
@@ -90,6 +109,22 @@ public enum BrandMenu {
         }
     }
 
+    /// a key pressed while the panel is open, as much of it as a panel needs.
+    struct KeyPress: Sendable {
+        let keyCode: UInt16
+        let characters: String
+        let hasCommand: Bool
+
+        init(_ event: NSEvent) {
+            keyCode = event.keyCode
+            characters = event.charactersIgnoringModifiers ?? ""
+            hasCommand = event.modifierFlags.contains(.command) || event.modifierFlags.contains(.control)
+        }
+    }
+
+    /// true while a brand menu or a select's panel is open.
+    public static var isShown: Bool { panel != nil }
+
     public static func dismiss() {
         panel?.orderOut(nil)
         panel = nil
@@ -99,6 +134,10 @@ public enum BrandMenu {
         localMonitor = nil
         globalMonitor = nil
         resignObserver = nil
+        keyHandler = nil
+        let close = closeHandler
+        closeHandler = nil
+        close?()
     }
 }
 
