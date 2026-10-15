@@ -27,7 +27,7 @@ the design kit for every laaabs. app on macOS and iOS, the swift twin of `ui-web
 
 - the first version changes nothing an app shows: it is baaar's theme (shared by taaab and caaapture) with the same public names, so moving an app onto the kit is deleting its `Theme/` and building. making the apps look the same is a later, separate version, decided with the gallery.
 - an app pins an exact tag. a change here reaches an app only through a pull request in that app.
-- no colour that is not in brand: black `#0a0a0a`, white at an opacity, cyan `#00b5e2` as a signal only.
+- no colour that is not in brand: black `#0a0a0a`, white at an opacity, cyan `#00b5e2` as a signal only. the other signals are as rare: red `#ff453a` (danger), green `#30d158` (success) and paaager's two levels, yellow `#ffc300` (attention) and orange `#ff7f00` (important); never a surface, never a decoration.
 - no analytics, no tracking sdk, ever.
 
 ## commands

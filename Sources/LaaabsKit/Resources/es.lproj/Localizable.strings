@@ -11,6 +11,7 @@
 "checking the plan" = "comprobando el plan";
 "clear" = "borrar";
 "days" = "días";
+"done" = "listo";
 "every %lld %@" = "cada %lld %@";
 "grant" = "conceder";
 "granted" = "concedido";
