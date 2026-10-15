@@ -11,6 +11,7 @@
 "checking the plan" = "checking the plan";
 "clear" = "clear";
 "days" = "days";
+"done" = "done";
 "every %lld %@" = "every %lld %@";
 "grant" = "grant";
 "granted" = "granted";
