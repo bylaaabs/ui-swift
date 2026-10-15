@@ -61,6 +61,16 @@ public struct BrandTextField: View {
 
     private var isFocused: Bool { focus?.wrappedValue ?? ownFocus }
 
+    /// return submits everywhere but in a multi line field on iOS, where it starts a new line: a
+    /// vertical field with `onSubmit` attached sends on return, so it gets none there and the screen
+    /// sends with its own button.
+    private var returnSubmits: Bool {
+        #if os(iOS)
+        if case .multiline = kind { return false }
+        #endif
+        return true
+    }
+
     /// the clear button shows only when there is something to clear
     var showsClear: Bool { clearable && !text.isEmpty && isEnabled }
 
@@ -71,7 +81,7 @@ public struct BrandTextField: View {
                 .font(mono ? .brandMono : .brandBody)
                 .foregroundStyle(isEnabled ? BrandColors.on : BrandColors.onDisabled)
                 .tint(BrandColors.accent)
-                .onSubmit { onSubmit?() }
+                .modifier(SubmitOnReturn(action: returnSubmits ? onSubmit : nil))
                 #if os(macOS)
                 .focusEffectDisabled()
                 #endif
@@ -145,5 +155,19 @@ public struct BrandTextField: View {
         static let minHeight: CGFloat = 44
         static let clear: CGFloat = 16
         #endif
+    }
+}
+
+/// `onSubmit` only when there is something to do on return: attached at all, it turns return in a
+/// vertical iOS field into a submit.
+private struct SubmitOnReturn: ViewModifier {
+    let action: (() -> Void)?
+
+    func body(content: Content) -> some View {
+        if let action {
+            content.onSubmit(action)
+        } else {
+            content
+        }
     }
 }
