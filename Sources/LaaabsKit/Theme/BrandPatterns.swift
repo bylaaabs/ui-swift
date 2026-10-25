@@ -1,11 +1,12 @@
-#if os(macOS)
 // the pieces every laaabs. app wrote inside its own files, gathered by speaaak and kept here as they
 // were written there: the settings sidebar row (baaar, taaab and caaapture's settings), rows in a
 // card (caaapture), a text field and a text area (caaapture's file name field, terminaaal's startup
 // commands), the permission row (baaar's permissions pane), a dark confirmation (caaapture) and a
 // menu item that runs a closure (caaapture's status item).
 
+#if os(macOS)
 import AppKit
+#endif
 import SwiftUI
 
 /// one sidebar row: 30 pt high, radius 7, cyan symbol and white label when selected.
@@ -154,6 +155,7 @@ public struct PermissionRow: View {
     }
 }
 
+#if os(macOS)
 /// asks before something that cannot be undone, in a dark alert. true when confirmed.
 @MainActor
 public func confirm(_ title: String, _ message: String, action: String) -> Bool {

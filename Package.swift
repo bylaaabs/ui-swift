@@ -32,5 +32,7 @@ let package = Package(
         // every component on one screen, to compare against the apps and the pencil canvas
         .executableTarget(name: "Gallery", dependencies: ["LaaabsKit", "LaaabsShortcuts"], path: "Gallery"),
         .testTarget(name: "LaaabsKitTests", dependencies: ["LaaabsKit"], path: "Tests/LaaabsKitTests"),
+        // the subscription layer is tested against storekit's local store, which only answers inside
+        // an app: Tests/StoreHost is that app (xcodegen), not a target of the package
     ]
 )

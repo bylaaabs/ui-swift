@@ -1,9 +1,12 @@
-#if os(macOS)
 // The laaabs. palette, moved here from the apps' own Theme/ (baaar, taaab and caaapture carried the
 // same copy) with the same names, so an app moves onto the kit by deleting its copy. As terminaaal defines it: Two colors do the work: cyan accent and
 // absolute black. Everything else is a white-opacity ladder. Never invent shades.
 
+#if os(macOS)
 import AppKit
+#else
+import UIKit
+#endif
 import SwiftUI
 
 public enum BrandColors {
@@ -15,8 +18,13 @@ public enum BrandColors {
     public static let accentDeep = Color(hex: 0x009EC5)
     /// Destructive actions.
     public static let danger = Color(hex: 0xFF453A)
-    /// Something that worked: a granted permission.
+    /// Something that worked: a granted permission. paaager's good level.
     public static let success = Color(hex: 0x30D158)
+    /// Something that needs a look soon: paaager's attention level. A signal, never a surface.
+    public static let attention = Color(hex: 0xFFC300)
+    /// Something that needs a look now, before it is urgent: paaager's important level. A signal,
+    /// never a surface.
+    public static let important = Color(hex: 0xFF7F00)
     /// Chrome black.
     public static let surface = Color(hex: 0x0A0A0A)
     /// Primary text and icons.
@@ -51,6 +59,43 @@ public enum BrandColors {
     public static let dangerStrong = danger.opacity(0.30)
     public static let dangerOutline = danger.opacity(0.55)
 
+    public static let successWash = success.opacity(0.06)
+    public static let successSoft = success.opacity(0.12)
+    public static let successTint = success.opacity(0.20)
+    public static let successStrong = success.opacity(0.30)
+    public static let successOutline = success.opacity(0.55)
+
+    public static let attentionWash = attention.opacity(0.06)
+    public static let attentionSoft = attention.opacity(0.12)
+    public static let attentionTint = attention.opacity(0.20)
+    public static let attentionStrong = attention.opacity(0.30)
+    public static let attentionOutline = attention.opacity(0.55)
+    /// Text on an attention tint, as `accentText` is on a cyan one: the colour 56 % of the way to white.
+    public static let attentionText = Color(hex: 0xFFE58F)
+
+    public static let importantWash = important.opacity(0.06)
+    public static let importantSoft = important.opacity(0.12)
+    public static let importantTint = important.opacity(0.20)
+    public static let importantStrong = important.opacity(0.30)
+    public static let importantOutline = important.opacity(0.55)
+    /// Text on an important tint: the colour 56 % of the way to white.
+    public static let importantText = Color(hex: 0xFFC78F)
+
+    // MARK: Glyphs on a solid signal
+
+    /// A symbol drawn on solid cyan (a level circle, the central tab action).
+    public static let accentGlyph = Color.white
+    /// A symbol drawn on solid red.
+    public static let dangerGlyph = Color.white
+    /// A symbol drawn on solid green: the yellow-greens need black to be read.
+    public static let successGlyph = Color.black
+    /// A symbol drawn on solid attention yellow.
+    public static let attentionGlyph = Color.black
+    /// A symbol drawn on solid important orange.
+    public static let importantGlyph = Color.black
+    /// A symbol drawn on solid white (paaager's info level).
+    public static let onGlyph = Color.black
+
     // MARK: Shadow
 
     /// Something floating over the content: the bar, a menu.
@@ -69,6 +114,7 @@ public enum BrandColors {
     /// Hover and pressed on top of a card.
     public static let surfaceHigh = Color(hex: 0x1A1A1A)
 
+    #if os(macOS)
     // MARK: AppKit twins
 
     public static let nsAccent = NSColor(displayP3Red: 0x00 / 255, green: 0xB5 / 255, blue: 0xE2 / 255, alpha: 1)
@@ -83,6 +129,11 @@ public enum BrandColors {
     public static let nsSurfaceHigh = NSColor(srgbRed: 0x1A / 255, green: 0x1A / 255, blue: 0x1A / 255, alpha: 1)
     public static let nsBorderSolid = NSColor(srgbRed: 0x3B / 255, green: 0x3B / 255, blue: 0x3B / 255, alpha: 1)
     public static let nsAccentDeep = NSColor(displayP3Red: 0x00 / 255, green: 0x9E / 255, blue: 0xC5 / 255, alpha: 1)
+    public static let nsDanger = NSColor(displayP3Red: 0xFF / 255, green: 0x45 / 255, blue: 0x3A / 255, alpha: 1)
+    public static let nsSuccess = NSColor(displayP3Red: 0x30 / 255, green: 0xD1 / 255, blue: 0x58 / 255, alpha: 1)
+    public static let nsAttention = NSColor(displayP3Red: 0xFF / 255, green: 0xC3 / 255, blue: 0x00 / 255, alpha: 1)
+    public static let nsImportant = NSColor(displayP3Red: 0xFF / 255, green: 0x7F / 255, blue: 0x00 / 255, alpha: 1)
+    #endif
 }
 
 extension Color {
@@ -148,4 +199,3 @@ private struct BrandHairlineBorder: ViewModifier {
             .background(ring, in: RoundedRectangle(cornerRadius: radius))
     }
 }
-#endif
