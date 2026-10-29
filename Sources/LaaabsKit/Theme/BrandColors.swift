@@ -1,6 +1,8 @@
 // The laaabs. palette, moved here from the apps' own Theme/ (baaar, taaab and caaapture carried the
 // same copy) with the same names, so an app moves onto the kit by deleting its copy. As terminaaal defines it: Two colors do the work: cyan accent and
 // absolute black. Everything else is a white-opacity ladder. Never invent shades.
+// The solid values come from brand (tokens/tokens.json, generated as `BrandTokens`), the one source
+// for every kit; a hex is never typed here, only tints and the ladder are derived.
 
 #if os(macOS)
 import AppKit
@@ -13,22 +15,22 @@ public enum BrandColors {
     // MARK: Anchors
 
     /// Brand cyan, the single accent.
-    public static let accent = Color(hex: 0x00B5E2)
+    public static let accent = Color(hex: BrandTokens.Colors.accent)
     /// Hover and pressed cyan.
-    public static let accentDeep = Color(hex: 0x009EC5)
+    public static let accentDeep = Color(hex: BrandTokens.Colors.accentDeep)
     /// Destructive actions.
-    public static let danger = Color(hex: 0xFF453A)
+    public static let danger = Color(hex: BrandTokens.Colors.danger)
     /// Something that worked: a granted permission. paaager's good level.
-    public static let success = Color(hex: 0x30D158)
+    public static let success = Color(hex: BrandTokens.Colors.success)
     /// Something that needs a look soon: paaager's attention level. A signal, never a surface.
-    public static let attention = Color(hex: 0xFFC300)
+    public static let attention = Color(hex: BrandTokens.Colors.attention)
     /// Something that needs a look now, before it is urgent: paaager's important level. A signal,
     /// never a surface.
-    public static let important = Color(hex: 0xFF7F00)
+    public static let important = Color(hex: BrandTokens.Colors.important)
     /// Chrome black.
-    public static let surface = Color(hex: 0x0A0A0A)
+    public static let surface = Color(hex: BrandTokens.Colors.surface)
     /// Primary text and icons.
-    public static let on = Color(hex: 0xFFFFFF)
+    public static let on = Color(hex: BrandTokens.Colors.on)
 
     // MARK: White-opacity ladder
 
@@ -71,7 +73,7 @@ public enum BrandColors {
     public static let attentionStrong = attention.opacity(0.30)
     public static let attentionOutline = attention.opacity(0.55)
     /// Text on an attention tint, as `accentText` is on a cyan one: the colour 56 % of the way to white.
-    public static let attentionText = Color(hex: 0xFFE58F)
+    public static let attentionText = Color(hex: BrandTokens.Colors.attentionText)
 
     public static let importantWash = important.opacity(0.06)
     public static let importantSoft = important.opacity(0.12)
@@ -79,7 +81,7 @@ public enum BrandColors {
     public static let importantStrong = important.opacity(0.30)
     public static let importantOutline = important.opacity(0.55)
     /// Text on an important tint: the colour 56 % of the way to white.
-    public static let importantText = Color(hex: 0xFFC78F)
+    public static let importantText = Color(hex: BrandTokens.Colors.importantText)
 
     // MARK: Glyphs on a solid signal
 
@@ -106,35 +108,53 @@ public enum BrandColors {
     // MARK: Solid lines and lifts
 
     /// `separator` flattened over `surface`, so crossing lines never stack their alpha.
-    public static let separatorSolid = Color(hex: 0x272727)
+    public static let separatorSolid = Color(hex: BrandTokens.Colors.separatorSolid)
     /// `border` flattened over `surface`.
-    public static let borderSolid = Color(hex: 0x3B3B3B)
+    public static let borderSolid = Color(hex: BrandTokens.Colors.borderSolid)
     /// Cards, the bar.
-    public static let surfaceElevated = Color(hex: 0x141414)
+    public static let surfaceElevated = Color(hex: BrandTokens.Colors.surfaceElevated)
     /// Hover and pressed on top of a card.
-    public static let surfaceHigh = Color(hex: 0x1A1A1A)
+    public static let surfaceHigh = Color(hex: BrandTokens.Colors.surfaceHigh)
 
     #if os(macOS)
     // MARK: AppKit twins
 
-    public static let nsAccent = NSColor(displayP3Red: 0x00 / 255, green: 0xB5 / 255, blue: 0xE2 / 255, alpha: 1)
-    public static let nsSurface = NSColor(srgbRed: 0x0A / 255, green: 0x0A / 255, blue: 0x0A / 255, alpha: 1)
-    public static let nsSurfaceElevated = NSColor(srgbRed: 0x14 / 255, green: 0x14 / 255, blue: 0x14 / 255, alpha: 1)
-    public static let nsSeparatorSolid = NSColor(srgbRed: 0x27 / 255, green: 0x27 / 255, blue: 0x27 / 255, alpha: 1)
+    public static let nsAccent = NSColor(displayP3Hex: BrandTokens.Colors.accent)
+    public static let nsSurface = NSColor(srgbHex: BrandTokens.Colors.surface)
+    public static let nsSurfaceElevated = NSColor(srgbHex: BrandTokens.Colors.surfaceElevated)
+    public static let nsSeparatorSolid = NSColor(srgbHex: BrandTokens.Colors.separatorSolid)
     public static let nsOn = NSColor.white
     public static let nsOnSecondary = NSColor.white.withAlphaComponent(0.55)
     public static let nsSurfaceSelected = NSColor.white.withAlphaComponent(0.08)
     public static let nsSeparator = NSColor.white.withAlphaComponent(0.12)
     public static let nsShadowOverlay = NSColor.black.withAlphaComponent(0.35)
-    public static let nsSurfaceHigh = NSColor(srgbRed: 0x1A / 255, green: 0x1A / 255, blue: 0x1A / 255, alpha: 1)
-    public static let nsBorderSolid = NSColor(srgbRed: 0x3B / 255, green: 0x3B / 255, blue: 0x3B / 255, alpha: 1)
-    public static let nsAccentDeep = NSColor(displayP3Red: 0x00 / 255, green: 0x9E / 255, blue: 0xC5 / 255, alpha: 1)
-    public static let nsDanger = NSColor(displayP3Red: 0xFF / 255, green: 0x45 / 255, blue: 0x3A / 255, alpha: 1)
-    public static let nsSuccess = NSColor(displayP3Red: 0x30 / 255, green: 0xD1 / 255, blue: 0x58 / 255, alpha: 1)
-    public static let nsAttention = NSColor(displayP3Red: 0xFF / 255, green: 0xC3 / 255, blue: 0x00 / 255, alpha: 1)
-    public static let nsImportant = NSColor(displayP3Red: 0xFF / 255, green: 0x7F / 255, blue: 0x00 / 255, alpha: 1)
+    public static let nsSurfaceHigh = NSColor(srgbHex: BrandTokens.Colors.surfaceHigh)
+    public static let nsBorderSolid = NSColor(srgbHex: BrandTokens.Colors.borderSolid)
+    public static let nsAccentDeep = NSColor(displayP3Hex: BrandTokens.Colors.accentDeep)
+    public static let nsDanger = NSColor(displayP3Hex: BrandTokens.Colors.danger)
+    public static let nsSuccess = NSColor(displayP3Hex: BrandTokens.Colors.success)
+    public static let nsAttention = NSColor(displayP3Hex: BrandTokens.Colors.attention)
+    public static let nsImportant = NSColor(displayP3Hex: BrandTokens.Colors.important)
     #endif
 }
+
+#if os(macOS)
+extension NSColor {
+    /// A brand token in Display P3: the cyan and the signals.
+    fileprivate convenience init(displayP3Hex hex: UInt32) {
+        self.init(
+            displayP3Red: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255,
+            blue: CGFloat(hex & 0xFF) / 255, alpha: 1)
+    }
+
+    /// A brand token in sRGB: the greys, identical in either space.
+    fileprivate convenience init(srgbHex hex: UInt32) {
+        self.init(
+            srgbRed: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255,
+            blue: CGFloat(hex & 0xFF) / 255, alpha: 1)
+    }
+}
+#endif
 
 extension Color {
     /// Hex literal (RGB) in Display P3, so the cyan and red render as vividly as the brand

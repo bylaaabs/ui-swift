@@ -19,7 +19,7 @@ extension BrandColors {
     public static let hairline = on.opacity(0.10)
     public static let hairlineSoft = on.opacity(0.08)
     /// ui-web `--color-cyan-text`: text on a cyan tint.
-    public static let accentText = Color(hex: 0x8FDDF2)
+    public static let accentText = Color(hex: BrandTokens.Colors.accentText)
 
 }
 
