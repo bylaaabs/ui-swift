@@ -15,7 +15,7 @@ let kitLog = Logger(subsystem: "com.laaabs.kit", category: "fonts")
 
 @MainActor
 public enum BrandFonts {
-    public nonisolated static let family = "Outfit"
+    public nonisolated static let family = BrandTokens.Fonts.sans
 
     private static var isRegistered = false
 

@@ -20,6 +20,7 @@ three people in madrid. three sides: tools by laaabs. (open source, free), apps 
 the design kit for every laaabs. app on macOS and iOS, the swift twin of `ui-web`: the marks, the tokens and the components that repeat. apps import `LaaabsKit`, at a pinned tag, and delete their own `Theme/`.
 
 - `LaaabsWordmarks` is `brand/generated/swift`, compiled as it is: the marks come from brand's vectors and are never retyped or re-exported as images here.
+- `LaaabsTokens` is `brand/generated/tokens/swift`, compiled as it is: the solid colours and font families come from brand's `tokens/tokens.json`, the one source for every kit. `BrandColors` is built from `BrandTokens`; a hex value is never typed here. a new colour goes into brand first.
 - `LaaabsKit` is everything an app uses: `Wordmark`, and next the tokens and the components.
 - `Gallery` puts every piece on one screen: `swift run Gallery`, or `swift run Gallery --png out.png` to compare without a window.
 
