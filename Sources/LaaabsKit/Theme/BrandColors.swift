@@ -101,7 +101,7 @@ public enum BrandColors {
     // MARK: Shadow
 
     /// Something floating over the content: the bar, a menu.
-    public static let shadowOverlay = Color.black.opacity(0.35)
+    public static let shadowOverlay = Color.black.opacity(BrandShadow.opacity)
     /// Something lifted off its own surface by a hair: a dragged chip.
     public static let shadowRaised = Color.black.opacity(0.35)
 
@@ -127,7 +127,7 @@ public enum BrandColors {
     public static let nsOnSecondary = NSColor.white.withAlphaComponent(0.55)
     public static let nsSurfaceSelected = NSColor.white.withAlphaComponent(0.08)
     public static let nsSeparator = NSColor.white.withAlphaComponent(0.12)
-    public static let nsShadowOverlay = NSColor.black.withAlphaComponent(0.35)
+    public static let nsShadowOverlay = NSColor.black.withAlphaComponent(BrandShadow.opacity)
     public static let nsSurfaceHigh = NSColor(srgbHex: BrandTokens.Colors.surfaceHigh)
     public static let nsBorderSolid = NSColor(srgbHex: BrandTokens.Colors.borderSolid)
     public static let nsAccentDeep = NSColor(displayP3Hex: BrandTokens.Colors.accentDeep)
