@@ -156,7 +156,7 @@ public struct BrandTabBar<Value: Hashable>: View {
                 .padding(.horizontal, 6)
                 .background(BrandColors.surfaceElevated.opacity(0.97), in: Capsule())
                 .overlay(Capsule().strokeBorder(BrandColors.separatorSolid, lineWidth: 1 / scale))
-                .shadow(color: BrandColors.shadowOverlay, radius: 18, y: 6)
+                .shadow(color: BrandColors.shadowOverlay, radius: BrandShadow.radius, y: BrandShadow.y)
                 .padding(.horizontal, 16)
                 .padding(.bottom, 4)
         }
