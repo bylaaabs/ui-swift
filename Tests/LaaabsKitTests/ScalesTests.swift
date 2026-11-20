@@ -1,7 +1,9 @@
-import AppKit
 import SwiftUI
 import Testing
 @testable import LaaabsKit
+#if os(macOS)
+import AppKit
+#endif
 
 /// spacing runs on a base of 4, from the hairline to 32
 @Test func spacingIsOnABaseOfFour() {
@@ -16,6 +18,8 @@ import Testing
     #expect(radii == [6, 8, 10, 12, 14, 16, 20, 24])
 }
 
+// the sizes and the shadow below are the macOS ones, read through AppKit; iOS has its own sizes
+#if os(macOS)
 /// the brand fonts are set at the sizes the scale names, so an app that reads the scale gets the
 /// kit's own sizes, and moving a size moves both
 @Test @MainActor func theBrandFontsAreSetAtTheScalesSizes() {
@@ -32,3 +36,4 @@ import Testing
     #expect(BrandShadow.radius == 18 && BrandShadow.y == 6)
     #expect(BrandColors.nsShadowOverlay.alphaComponent == CGFloat(BrandShadow.opacity))
 }
+#endif
