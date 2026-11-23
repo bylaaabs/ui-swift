@@ -12,7 +12,7 @@ three people in madrid. three sides: tools by laaabs. (open source, free), apps 
 - platforms in this order: macOS, windows, iOS / iPadOS, android.
 - rust for cores and services, typescript for web front ends, swift / kotlin / winui only as the native layer on a rust core.
 - every piece of work has an issue; branches are `<type>/<slug>`; conventional commits; pull requests only, never a push to main; never merge without being asked.
-- `map/` and `brand/` are submodules; `service.yaml` at the root describes this repo and must agree with `map/map/services.yaml`.
+- `brand/` is a submodule. the map (bylaaabs/map) is private and is not one here: this repo is public. `service.yaml` at the root describes this repo; keep it in step with the map by hand.
 - `CLAUDE.md` is just `@AGENTS.md`. edit this file, not that one.
 
 ## ui-swift
